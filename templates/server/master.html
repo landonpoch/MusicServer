@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}styles/reset.css">
+    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}styles/style.css">
+    {% block styles %}
+    {% endblock %}
+</head>
+<body>
+    <div id="header">
+        <h1>HomeStream Media Server</h1>
+        
+        <div id="welcome">
+        <span>Hello, Landon</span>
+        </div>
+        
+        <div id="searchDiv">
+        <input type="text" id="searchTerm" />
+        <input type="submit" id="search" value="Search" />
+        <input type="submit" id="clear" value="Clear Playlist" />
+        </div>
+    </div>
+
+    {% block content %}
+    {% endblock %}
+    {% block scripts %}
+    {% endblock %}
+</body>
+</html>

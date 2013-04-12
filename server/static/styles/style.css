@@ -1,0 +1,56 @@
+body {
+    margin: 0px;
+    padding-top: 102px;
+    background-color: #CCCCCC;
+}
+
+#header {
+    top: 0;
+    position: fixed;
+    right: 0;
+    left: 0;
+    color: #FFFFFF;
+    background-color: #000000;
+    z-index: 1;
+    height: 102px;
+}
+
+#header h1 {
+    margin: 1em;
+    width: 400px;
+    position: absolute;
+}
+
+#welcome {
+    position: relative;
+    float: right;
+    top: 0px;
+}
+
+#searchDiv {
+    position: relative;
+    float: right;
+    clear: right;
+    top: 60px;
+}
+
+table {
+    width: 500px;
+    border-style: solid;
+    border-width: 1px;
+    margin: 12px;
+}
+
+th {
+    font-weight: bold;
+    vertical-align: middle;
+}
+
+td {
+    vertical-align: middle;
+    text-align: center;
+}
+
+tr {
+    height: 30px;
+}

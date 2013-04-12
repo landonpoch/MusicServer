@@ -1,0 +1,32 @@
+{% extends 'server/master.html' %}
+
+{% block content %}
+<h1>Manage Libraries</h1>
+
+<table>
+<thead>
+    <tr>
+    <th>Library Name</th>
+    <th>Library Path</th>
+    </tr>
+</thead>
+<tbody>
+    {% for library in libraries %}
+        <tr>
+        <td>{{ library.name }}</td>
+        <td>{{ library.path }}</td>
+        </tr>
+    {% endfor %}
+</tbody>
+</table>
+
+<form action="/server/create_library" method="post">
+    {% csrf_token %}
+    
+    <label>Library Name</label>
+    <input type="text" name="name" /><br />
+    <label>Library Path</label>
+    <input type="text" name="path" /><br />
+    <input type="submit" value="Create Library" />
+</form>
+{% endblock %}
