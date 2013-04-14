@@ -1,0 +1,10 @@
+Ran across some encoding issues.
+
+Here are some useful resources:
+http://stackoverflow.com/questions/2004137/unicodeencodeerror-on-joining-file-name
+http://www.lingua-systems.com/knowledge/unicode-mappings/iso-8859-1-to-unicode.html
+http://docs.python.org/2/howto/unicode.html
+http://stackoverflow.com/questions/10061842/how-to-set-django-and-mysql-work-with-utf-8
+http://docs.python.org/2/library/json.html
+http://ampache.org/wiki/support:charset
+http://stackoverflow.com/questions/6539881/python-converting-from-iso-8859-1-latin1-to-utf-8

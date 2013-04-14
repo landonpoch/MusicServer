@@ -69,6 +69,6 @@ def stream_song(request):
 
 def _serialize(songs):
     for song in songs:
-        song.mp3 = song.path
+        song.mp3 = unicode(song.path, 'utf-8')
         del(song.path)
     return json.dumps([song.__dict__ for song in songs], ensure_ascii=False)
