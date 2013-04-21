@@ -40,6 +40,9 @@ def search_songs(request):
 def stream_song(request):
     song_id = request.GET.get('id')
     path = Factory().get_services().get_song_path(song_id)
+    #print path
+    #path = path.decode('latin-1').encode('utf-8')
+    #print path
     f = open(path, 'rb')
     size = os.path.getsize(path)
     begin = 0
@@ -69,6 +72,7 @@ def stream_song(request):
 
 def _serialize(songs):
     for song in songs:
-        song.mp3 = unicode(song.path, 'utf-8')
+        song.mp3 = song.path
+        #song.title = song.title.decode('latin-1').encode('utf-8')
         del(song.path)
     return json.dumps([song.__dict__ for song in songs], ensure_ascii=False)

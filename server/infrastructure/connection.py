@@ -13,4 +13,4 @@ class ConnectionManager:
         user = 'music'
         passwd = 'music'
         db = 'music'
-        return MySQLdb.connect(host, user, passwd, db)
+        return MySQLdb.connect(host, user, passwd, db, charset='utf8')

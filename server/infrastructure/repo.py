@@ -45,7 +45,7 @@ class Repo:
 
     def _add_song(self, song, library_id):
         cursor = self._conn.cursor()
-        print 'inserting %s into database...' % song.title
+        print 'inserting %s into database...' % song.path
         cursor.execute(Queries.INSERT_SONG, 
         (song.path, song.title, song.album, 
         song.artist, song.track, library_id))

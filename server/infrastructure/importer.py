@@ -7,12 +7,12 @@ class FileImporter:
     def recurse_directory(self, path):
         songs = []
         for root, sub_folders, files in os.walk(path):
-            root = self.get_utf8_string(root)
+            #root = self.get_utf8_string(root)
             for file in [f for f in files if f.endswith('.mp3')]:
-                file = self.get_utf8_string(file)
+                #file = self.get_utf8_string(file)
                 fullpath = os.path.join(root, file)
                 song = tags.Tags().get_file_info(fullpath)
-                song.path = (fullpath).replace(path.encode('utf-8') + '/'.encode('utf-8'), '')
+                song.path = fullpath#(fullpath).replace(path.encode('utf-8') + '/'.encode('utf-8'), '')
                 songs.append(song)
         return songs
 
