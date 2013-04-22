@@ -96,8 +96,8 @@ class Queries:
     OR UPPER(s.RelativePath) LIKE UPPER('%%%s%%'))'''
 
     GET_PATH_BY_ID = '''SELECT 
-    l.Path, 
-    s.RelativePath
+        l.Path, 
+        s.RelativePath
     FROM Library l
     INNER JOIN Song s ON l.Id = s.LibraryId
     WHERE s.Id = %s'''
