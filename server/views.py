@@ -18,6 +18,10 @@ def index(request):
     return render_to_response('server/index.html',
         context_instance=RequestContext(request))
 
+def player(request):
+    return render_to_response('server/player.html',
+        context_instance=RequestContext(request))
+
 def libraries(request):
     libraries = Factory().get_services().get_libraries()
     context = {'libraries': libraries}
