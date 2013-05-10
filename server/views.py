@@ -27,6 +27,10 @@ def libraries(request):
     context = {'libraries': libraries}
     return render(request, 'server/libraries.html', context)
 
+def search(request):
+    return render_to_response('server/search.html',
+        context_instance=RequestContext(request))
+
 def get_random_songs(request):
     songs = Factory().get_services().get_random(10, library_id)
     return HttpResponse(_serialize(songs))

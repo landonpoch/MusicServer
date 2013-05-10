@@ -28,7 +28,11 @@ function loadEvents() {
   });
   $('#libraries').click(function (event) {
     event.preventDefault();
-    getLibraries();
+    loadUrl('http://debian:8080/server/libraries');
+  });
+  $('#advsearch').click(function (event) {
+    event.preventDefault();
+    loadUrl('http://debian:8080/server/search');
   });
 }
 
@@ -58,11 +62,8 @@ function searchSongs() {
   });
 }
 
-function getLibraries() {
-  var url = 'http://debian:8080/server/libraries'; 
-  $.get(url, populateContent);
-}
-
-function populateContent(data) {
-  $('#content').html(data);
+function loadUrl(url) {
+  $.get(url, function (data) {
+    $('#content').html(data);
+  });
 }
