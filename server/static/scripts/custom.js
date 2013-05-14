@@ -1,9 +1,14 @@
 var myPlaylist;
 
 $(document).ready(function(){
+  loadHome();
   loadPlaylist();
   loadEvents();
 });
+
+function loadHome() {
+  loadUrl('http://debian:8080/server/home');
+}
 
 function loadPlaylist() {
   var cssSelectors = {}; // default
@@ -29,6 +34,18 @@ function loadEvents() {
   $('#libraries').click(function (event) {
     event.preventDefault();
     loadUrl('http://debian:8080/server/libraries');
+  });
+  $('#home').click(function (event) {
+    event.preventDefault();
+    loadUrl('http://debian:8080/server/home');
+  });
+  $('#artists').click(function (event) {
+    event.preventDefault();
+    loadUrl('http://debian:8080/server/artists');
+  });
+  $('#albums').click(function (event) {
+    event.preventDefault();
+    loadUrl('http://debian:8080/server/albums');
   });
   $('#advsearch').click(function (event) {
     event.preventDefault();

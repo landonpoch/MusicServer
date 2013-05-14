@@ -4,6 +4,9 @@ from server import views
 
 urlpatterns = patterns('',
     url(r'^$', views.index, name='index'),
+    url(r'^home$', views.home, name='home'),
+    url(r'^artists$', views.artists, name='artists'),
+    url(r'^albums$', views.albums, name='albums'),
     url(r'^libraries$', views.libraries, name='libraries'),
     url(r'^create_library$', views.create_library, name='create_library'),
     url(r'^search$', views.search, name='search'),

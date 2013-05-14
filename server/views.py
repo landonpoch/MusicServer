@@ -22,6 +22,18 @@ def player(request):
     return render_to_response('server/player.html',
         context_instance=RequestContext(request))
 
+def home(request):
+    return render_to_response('server/home.html',
+        context_instance=RequestContext(request))
+
+def artists(request):
+    return render_to_response('server/artists.html',
+        context_instance=RequestContext(request))
+
+def albums(request):
+    return render_to_response('server/albums.html',
+        context_instance=RequestContext(request))
+
 def libraries(request):
     libraries = Factory().get_services().get_libraries()
     context = {'libraries': libraries}
