@@ -7,6 +7,7 @@ from django.http import HttpResponse
 from django.shortcuts import render_to_response, redirect, render
 from django.template import RequestContext
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth import logout
 
 from infrastructure.services import Services
 from dependencies import Factory
@@ -22,6 +23,10 @@ http://stackoverflow.com/questions/6069070/how-to-use-permission-required-decora
 Also add user info for authenticated users. See:
 https://docs.djangoproject.com/en/1.4/topics/auth/
 '''
+
+def logout_view(request):
+    logout(request)
+    return redirect('index')
 
 @login_required
 def index(request):
