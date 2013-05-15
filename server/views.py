@@ -6,6 +6,7 @@ import json
 from django.http import HttpResponse
 from django.shortcuts import render_to_response, redirect, render
 from django.template import RequestContext
+from django.contrib.auth.decorators import login_required
 
 from infrastructure.services import Services
 from dependencies import Factory
@@ -14,49 +15,68 @@ library_id = 95
 mp3_mime = 'audio/mpeg'
 ogg_mime = 'audio/ogg'
 
+'''
+Look at making all views login required by using a mixin or something like in this so post:
+http://stackoverflow.com/questions/6069070/how-to-use-permission-required-decorators-on-django-class-based-views
+
+Also add user info for authenticated users. See:
+https://docs.djangoproject.com/en/1.4/topics/auth/
+'''
+
+@login_required
 def index(request):
     return render_to_response('server/index.html',
         context_instance=RequestContext(request))
 
+@login_required
 def player(request):
     return render_to_response('server/player.html',
         context_instance=RequestContext(request))
 
+@login_required
 def home(request):
     return render_to_response('server/home.html',
         context_instance=RequestContext(request))
 
+@login_required
 def artists(request):
     return render_to_response('server/artists.html',
         context_instance=RequestContext(request))
 
+@login_required
 def albums(request):
     return render_to_response('server/albums.html',
         context_instance=RequestContext(request))
 
+@login_required
 def libraries(request):
     libraries = Factory().get_services().get_libraries()
     context = {'libraries': libraries}
     return render(request, 'server/libraries.html', context)
 
+@login_required
 def search(request):
     return render_to_response('server/search.html',
         context_instance=RequestContext(request))
 
+@login_required
 def get_random_songs(request):
     songs = Factory().get_services().get_random(10, library_id)
     return HttpResponse(_serialize(songs))
 
+@login_required
 def create_library(request):
     name = request.POST['name']
     path = request.POST['path']
     Factory().get_services().create_library(name, path)
     return redirect('index')
 
+@login_required
 def search_songs(request):
     songs = Factory().get_services().search_songs(request.GET.get('q'))
     return HttpResponse(_serialize(songs))
 
+@login_required
 def stream_song(request):
     song_id = request.GET.get('id')
     path = Factory().get_services().get_song_path(song_id)
