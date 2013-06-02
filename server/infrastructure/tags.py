@@ -17,3 +17,8 @@ class Tags:
             song.title = filename
         return song
 
+    def get_songs(self, path):
+        filename = ntpath.basename(path)
+        track = eyed3.core.load(path)
+
+        

@@ -1,6 +1,7 @@
 import os
 import MySQLdb
 
+from queries import Queries
 from server.domain.entities import Song, Library
 
 class Repo:
@@ -43,12 +44,43 @@ class Repo:
         for song in songs:
             self._add_song(song, library_id)
 
+    def add_artists(self, artists, library_id):
+        for name, artist in artists.iteritems():
+            self._add_artist(name, artist, library_id)
+
     def _add_song(self, song, library_id):
         cursor = self._conn.cursor()
         print 'inserting %s into database...' % song.path
         cursor.execute(Queries.INSERT_SONG, 
         (song.path, song.title, song.album, 
         song.artist, song.track, library_id))
+
+    def _add_artist(self, name, artist, library_id):
+        cursor = self._conn.cursor(MySQLdb.cursors.DictCursor)
+        name = name or 'Unknown Artist'
+        cursor.execute(Queries.GET_ARTIST_ID, name)
+        result = cursor.fetchone()
+        artist_id = result['Id'] if result else None
+        if not artist_id:
+            cursor.execute(Queries.INSERT_ARTIST, name)
+            artist_id = cursor.lastrowid
+        print 'Artist %s:  %s' % (artist_id, name)
+        for album_name, album in artist.iteritems():
+            self._add_album(cursor, album_name, album, artist_id, library_id)
+
+    def _add_album(self, cursor, name, album, artist_id, library_id):
+        cursor.execute(Queries.GET_ALBUM_ID, (name, artist_id))
+        result = cursor.fetchone()
+        album_id = result['Id'] if result else None
+        if not album_id:
+            cursor.execute(Queries.INSERT_ALBUM, (name, artist_id))
+            album_id = cursor.lastrowid
+        print '\tAlbum %s: %s' % (album_id, name)
+        for song in album:
+            pass
+
+    def _add_songer(self, cursor, song, album_id, library_id):
+        cursor.execute(Queries.INSERT_SONGER, (song.path, song.title, song.track, album_id, library_id))
 
     def _load_songs(self, cursor):
         songs = []
@@ -59,45 +91,3 @@ class Repo:
             song.artist = record[2]
             songs.append(song)
         return songs
-        
-
-class Queries:
-    INSERT_LIBRARY = '''INSERT INTO Library
-    (Name, Path)
-    VALUES (%s, %s)'''
-
-    GET_LIBRARIES = '''SELECT Id, `Name`, Path
-    FROM Library'''
-
-    INSERT_SONG = '''INSERT INTO Song
-    (RelativePath, Title, Album, Artist, Track, LibraryId)
-    VALUES (%s, %s, %s, %s, %s, %s)'''
-
-    RANDOM_SONGS = '''SELECT 
-        s.Id, 
-        s.Title,
-        s.Artist
-    FROM Song s
-    INNER JOIN Library l ON s.LibraryId = l.Id
-    WHERE LibraryId = %s
-    ORDER BY RAND()
-    LIMIT 0, %s'''
-
-    SEARCH_SONGS = '''SELECT
-        s.Id,
-        s.Title,
-        s.Artist
-    FROM Song s
-    INNER JOIN Library l ON s.LibraryId = l.Id
-    WHERE 
-    (UPPER(s.Title) LIKE UPPER('%%%s%%')
-    OR UPPER(s.Album) LIKE UPPER('%%%s%%')
-    OR UPPER(s.Artist) LIKE UPPER('%%%s%%')
-    OR UPPER(s.RelativePath) LIKE UPPER('%%%s%%'))'''
-
-    GET_PATH_BY_ID = '''SELECT 
-        l.Path, 
-        s.RelativePath
-    FROM Library l
-    INNER JOIN Song s ON l.Id = s.LibraryId
-    WHERE s.Id = %s'''
