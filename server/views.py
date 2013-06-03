@@ -9,6 +9,7 @@ from django.template import RequestContext
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
 
+from models import Library, Artist, Album, Song
 from infrastructure.services import Services
 from dependencies import Factory
 
@@ -55,7 +56,8 @@ def albums(request):
 
 @login_required
 def libraries(request):
-    libraries = Factory().get_services().get_libraries()
+    #libraries = Factory().get_services().get_libraries()
+    libraries = Library.objects.all()
     context = {'libraries': libraries}
     return render(request, 'server/libraries.html', context)
 
@@ -73,7 +75,9 @@ def get_random_songs(request):
 def create_library(request):
     name = request.POST['name']
     path = request.POST['path']
-    Factory().get_services().create_library(name, path)
+    #Factory().get_services().create_library(name, path)
+    l = Library(name = name, path = path)
+    l.save()
     return redirect('index')
 
 @login_required

@@ -53,3 +53,7 @@ class Queries:
 
     INSERT_ALBUM = '''INSERT INTO Album
     (Name, ArtistId) VALUES (%s, %s)'''
+
+    INSERT_SONGER = '''INSERT INTO Track
+    (Path, Name, Track, AlbumId, LibraryId)
+    VALUES (%s, %s, %s, %s, %s)'''

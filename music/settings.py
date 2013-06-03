@@ -17,6 +17,10 @@ DATABASES = {
         'PASSWORD': 'music',                  # Not used with sqlite3.
         'HOST': '',                      # Set to empty string for localhost. Not used with sqlite3.
         'PORT': '',                      # Set to empty string for default. Not used with sqlite3.
+        
+        # The character set must be utf8mb4 for MySQL to support complete UTF-8 encoding
+        # IMPORTANT: The database must be created with a utf8mb4 default encoding so that these options will take effect
+        'OPTIONS': { 'init_command': 'SET storage_engine=INNODB,character_set_connection=utf8mb4,collation_connection=utf8mb4_unicode_ci;' },
     }
 }
 

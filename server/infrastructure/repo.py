@@ -75,12 +75,13 @@ class Repo:
         if not album_id:
             cursor.execute(Queries.INSERT_ALBUM, (name, artist_id))
             album_id = cursor.lastrowid
-        print '\tAlbum %s: %s' % (album_id, name)
+        print '  Album %s: %s' % (album_id, name)
         for song in album:
-            pass
+            self._add_songer(cursor, song, album_id, library_id)
 
     def _add_songer(self, cursor, song, album_id, library_id):
         cursor.execute(Queries.INSERT_SONGER, (song.path, song.title, song.track, album_id, library_id))
+        print '    Track %s: %s' % (cursor.lastrowid, song.title)
 
     def _load_songs(self, cursor):
         songs = []
