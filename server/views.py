@@ -8,12 +8,13 @@ from django.shortcuts import render_to_response, redirect, render
 from django.template import RequestContext
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
+from django.core import serializers
 
-from models import Library, Artist, Album, Song
+from domain.entities import Song
 from infrastructure.services import Services
 from dependencies import Factory
 
-library_id = 95
+library_id = 1
 mp3_mime = 'audio/mpeg'
 ogg_mime = 'audio/ogg'
 
@@ -56,8 +57,7 @@ def albums(request):
 
 @login_required
 def libraries(request):
-    #libraries = Factory().get_services().get_libraries()
-    libraries = Library.objects.all()
+    libraries = Factory().get_services().get_libraries()
     context = {'libraries': libraries}
     return render(request, 'server/libraries.html', context)
 
@@ -75,9 +75,7 @@ def get_random_songs(request):
 def create_library(request):
     name = request.POST['name']
     path = request.POST['path']
-    #Factory().get_services().create_library(name, path)
-    l = Library(name = name, path = path)
-    l.save()
+    Factory().get_services().create_library(name, path)
     return redirect('index')
 
 @login_required
@@ -89,6 +87,7 @@ def search_songs(request):
 def stream_song(request):
     song_id = request.GET.get('id')
     path = Factory().get_services().get_song_path(song_id)
+    print path
     f = open(path, 'rb')
     size = os.path.getsize(path)
     begin = 0
@@ -117,7 +116,28 @@ def stream_song(request):
     return response
 
 def _serialize(songs):
+    '''
     for song in songs:
-        song.mp3 = song.path
-        del(song.path)
+        song.title = song.name
+        del(song.name)
+        song.mp3 = song.relative_path
+        del(song.relative_path)
+    '''
+    #serialized_songs = _map_songs(songs)
     return json.dumps([song.__dict__ for song in songs], ensure_ascii=False)
+
+def _map_songs(songs):
+    serialized_songs = []
+    for song in songs:
+        s = Song()
+        s.artist = 'blank'
+        s.album = 'blank'
+        s.title = song.name
+        s.track = song.track
+        s.mp3 = song.relative_path
+        serialized_songs.append(s)
+    return serialized_songs
+
+def _move_property(obj, src, dest):
+    obj.__dict__[dest] = obj.__dict__[src]
+    del(obj.__dict__[src])

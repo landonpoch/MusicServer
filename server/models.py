@@ -13,6 +13,7 @@ class Album(models.Model):
     artist = models.ForeignKey(Artist)
 
 class Song(models.Model):
+    relative_path = models.CharField(max_length=256)
     name = models.CharField(max_length=256)
     track = models.PositiveSmallIntegerField(default=None, blank=True, null=True)
     album = models.ForeignKey(Album)
